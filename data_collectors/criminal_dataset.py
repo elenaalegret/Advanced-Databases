@@ -1,4 +1,4 @@
-## Dataset Collection
+#### Dataset Preparation
 
 # Imports
 import pandas as pd
@@ -15,7 +15,6 @@ criminal_dataset = requests.get(dataset_urls['criminal_acts']).content
 criminal_dataset = pd.read_json(io.StringIO(criminal_dataset.decode('utf-8')))
 
 # Load and read in .parquet format
-criminal_dataset.to_parquet('criminal_dataset.parquet')
-#criminal_dataset = pd.read_parquet('criminal_dataset.parquet')
+criminal_dataset.to_parquet('./../data/landing_zone/criminal_dataset.parquet')
 
 
