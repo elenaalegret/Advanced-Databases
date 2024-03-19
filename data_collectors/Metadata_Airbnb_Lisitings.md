@@ -5,9 +5,9 @@
 - **Title**: Airbnb Listings in Barcelona
 - **Themes**: Spatial planning, Town planning, Buildings, Equipment, Housing
 - **Description**: This dataset comprises Airbnb listings in Barcelona, Spain. It includes a variety of attributes for each listing, such as the type of room, the number of listings per host, verification methods, amenities, and other features specific to each listing.
-- **Identifier**: `airbnb-listings
+- **Identifier**: `airbnb-listings`
 - **Source**: [OpenDataSoft](https://public.opendatasoft.com/explore/dataset/airbnb-listings/information/?disjunctive.host_verifications&disjunctive.amenities&disjunctive.features&q=barcelona&refine.city=Barcelona)
-- **Data Provided By**: Airbnb
+- **Data Provided By**: [Inside Airbnb](http://insideairbnb.com/get-the-data.html)
 - **Last Modified**: February 22, 2024 3:42 PM
 - **License**: CC 0 1.0
 
