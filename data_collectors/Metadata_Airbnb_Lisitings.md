@@ -1,5 +1,4 @@
 # Airbnb Listings in Barcelona -- Dataset Metadata
----
 
 ## General Information
 - **Title**: Airbnb Listings in Barcelona
