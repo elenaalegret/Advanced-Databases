@@ -1,29 +1,38 @@
-# Imports
-from pyspark.sql import SparkSession
-from pyspark.sql.functions import col, upper, when, length, lit
 
-spark = SparkSession.builder.appName("DataFormattingPipeline").getOrCreate()
+###                           ###
+### Data Formatting Pipeline ###
+###                           ###
 
-# Load df into Spark df
-criminal_dataset = spark.read.parquet('../data/landing_zone/criminal_dataset.parquet').filter(col("municipi") == "Barcelona")
-airbnb_dataset = spark.read.parquet('../data/landing_zone/airbnb_listings.parquet')
 
-# Homogeneized the dfs into a common data format
-#   |--> [rea_b_sica_policial_abp] Remove the "ABP " prefix and normalize "CIUTAT VELLA" to uppercase -- match w criminal_dataset -- neighbourhood_group_cleansed
-criminal_dataset = criminal_dataset.withColumn("rea_b_sica_policial_abp", upper(col("rea_b_sica_policial_abp").substr(lit(5), length(col("rea_b_sica_policial_abp")))))
+# Import
+import pandas as pd
+import duckdb
 
-#   |--> [rea_b_sica_policial_abp] Remove undesired rows
-criminal_dataset = criminal_dataset.filter(~col("rea_b_sica_policial_abp").isin(["AT D'INFORMACIÓ RPMB", "FET FORA DE CATALUNYA", "BARCELONA", "FORA DE CATALUNYA"]))
-#   |--> [neighbourhood_group_cleansed] same type of data and format as area_basica_policial
-airbnb_dataset = airbnb_dataset.withColumn("neighbourhood_group_cleansed", upper(col("neighbourhood_group_cleansed")))
+## Prepare the dataset for DuckDB framework
 
-# Comprovació -- Tenim els mateixos barris amb el mateix format als dos df
-criminal_dataset.select("rea_b_sica_policial_abp").distinct().show()
-airbnb_dataset.select("neighbourhood_group_cleansed").distinct().show()
+# Load .parquet database to Pandas Dataframe 
+df_airbnb_listings = pd.read_parquet(path='/Users/elenaalegretregalado/Desktop/Advanced-Databases/data/landing_zone/airbnb_listings.parquet')
+df_criminal_dataset = pd.read_parquet(path='/Users/elenaalegretregalado/Desktop/Advanced-Databases/data/landing_zone/criminal_dataset.parquet')
+#df_tripadvisor_locations = pd.read_parquet(ruta_archivo_parquet='/Users/elenaalegretregalado/Desktop/Advanced-Databases/data/landing_zone/tripadvisor_locations.parquet')
+#df_tripadvisor_reviews = pd.read_parquet(ruta_archivo_parquet='/Users/elenaalegretregalado/Desktop/Advanced-Databases/data/landing_zone/tripadvisor_reviews.parquet')
 
-#   |--> Rename the cols to neighborhood_formatted
-criminal_dataset = criminal_dataset.withColumnRenamed("area_basica_policial_abp", "neighborhood_formatted")
-airbnb_dataset = airbnb_dataset.withColumnRenamed("neighbourhood_group_cleansed", "neighborhood_formatted")
 
-criminal_dataset.write.parquet("../data/formatted_zone/criminal_dataset.parquet")
-airbnb_dataset.write.parquet("../data/formatted_zone/airbnb_dataset.parquet")
+# Make connection to DuckDB database
+con = duckdb.connect(database=':memory:', read_only=False)
+
+# Insert DataFrame to DuckDB
+con.register('airbnb_listings', df_airbnb_listings)
+con.register('criminal_dataset', df_criminal_dataset)
+#con.register('tripadvisor_locations', df_tripadvisor_locations)
+#con.register('tripadvisor_reviews', df_tripadvisor_reviews)
+
+
+
+"""
+# CONSULT EXAMPLE:
+query_airbnb_listings = "SELECT * FROM airbnb_listings;"
+
+# Execute consult SQL and take results 
+result_airbnb_listings = con.execute(query_airbnb_listings).fetchall()
+print(result_airbnb_listings)
+"""
