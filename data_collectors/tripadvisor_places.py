@@ -24,7 +24,7 @@ for i, info in airbnb.sample(n=150).iterrows():
 
         db = pd.json_normalize(response['data'])
         db['type'] = 'restaurant'  # Añade la columna 'type' con el valor 'restaurant'
-
+        db['district'] = info['neighbourhood_group_cleansed']
         total_results.append(db)
 
         count += 1
@@ -48,6 +48,7 @@ for i, info in airbnb.sample(n=150).iterrows():
 
         db = pd.json_normalize(response['data'])
         db['type'] = 'attraction'  # Añade la columna 'type' con el valor 'attraction'
+        db['district'] = info['neighbourhood_group_cleansed']
 
         total_results.append(db)
 
