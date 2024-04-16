@@ -4,7 +4,7 @@
 ## General Information
 
 + **Title**: Criminality in Barcelona Dataset
-+ 
+  
 + **Language:** Catalan
 
 + **Geographical Coverage:** Barcelona, Spain
