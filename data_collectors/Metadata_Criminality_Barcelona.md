@@ -1,8 +1,31 @@
-**Title:** Criminality in Barcelona Dataset
+# Metadata of Criminality in Barcelona Dataset
 
-**Description:** This dataset provides comprehensive details on criminal incidents reported in Barcelona. It includes temporal, geographical, and categorical information about each incident. 
 
-**Columns:**
+## General Information
+---
++ **Title**: Criminality in Barcelona Dataset
++ 
++ **Language:** Catalan
+
++ **Geographical Coverage:** Barcelona, Spain
+
++ **Description:** This dataset provides comprehensive details on criminal incidents reported in Barcelona. It includes temporal, geographical, and categorical information about each incident. 
+
++ **Temporal Coverage:** 2020-2023
+
++ **Data Source:** [Mossos Gencat](https://mossos.gencat.cat/)
+
++ **Accessibility:** API
+
++ **License:** Open Data License
+
++ **Keywords:** Barcelona, crime, criminal incidents, public safety, police report, criminal code
+
++ **Last Updated:** 2023
+
+
+## Dataset Attributes
+
 1. **Year (any):** The year when the incident was reported.
 2. **Month Number (num_mes):** The month when the incident was reported, represented as a number (1-12).
 3. **Month Name (nom_mes):** The name of the month when the incident was reported.
@@ -20,18 +43,3 @@
 15. **Number of Incidents or Infractions (nombre_fets_o_infraccions):** The total number of incidents or infractions reported in the entry.
 16. **Number of Victims (nombre_victimes):** The total number of victims involved in the incidents.
 
-**Language:** Catalan
-
-**Geographical Coverage:** Barcelona, Spain
-
-**Temporal Coverage:** 2020-2023
-
-**Data Source:** https://mossos.gencat.cat/
-
-**Accessibility:** API
-
-**License:** Open Data License
-
-**Keywords:** Barcelona, crime, criminal incidents, public safety, police report, criminal code
-
-**Last Updated:** 2023
