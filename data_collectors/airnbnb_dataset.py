@@ -21,5 +21,4 @@ while start < 10000:
 
 # Convino totes les requests en una sola
 airbnb_listings = pd.concat(total_results, ignore_index=True)
-airbnb_listings = airbnb_listings[airbnb_listings['geolocation.lon'] >= 2]
 airbnb_listings.to_parquet('./../data/landing_zone/airbnb_listings.parquet')
