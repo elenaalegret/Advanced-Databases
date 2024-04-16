@@ -14,13 +14,13 @@ spark = SparkSession.builder.appName("DataFormattingPipeline").getOrCreate()
 ## Prepare the dataset for DuckDB framework
 
 # Load .parquet database to Pandas Dataframe 
-df_airbnb_listings = spark.read.parquet('./data/landing_zone/airbnb_listings.parquet')
-df_criminal_dataset = spark.read.parquet('./data/landing_zone/criminal_dataset.parquet')
-df_tripadvisor_locations = spark.read.parquet('./data/landing_zone/tripadvisor_locations.parquet')
-df_tripadvisor_reviews = spark.read.parquet('./data/landing_zone/tripadvisor_reviews.parquet')
+df_airbnb_listings = spark.read.parquet('../data/landing_zone/airbnb_listings.parquet')
+df_criminal_dataset = spark.read.parquet('../data/landing_zone/criminal_dataset.parquet')
+df_tripadvisor_locations = spark.read.parquet('../data/landing_zone/tripadvisor_locations.parquet')
+df_tripadvisor_reviews = spark.read.parquet('../data/landing_zone/tripadvisor_reviews.parquet')
 
 # Make connection to DuckDB database
-con = duckdb.connect(database=':memory:', read_only=False)
+con = duckdb.connect(database='barcelona', read_only=False)
 
 # Insert DataFrame to DuckDB
 con.register('airbnb_listings', df_airbnb_listings)
