@@ -1,15 +1,32 @@
+###########################################
+##  TripAdvisor Reviews Data Retrieval   ##
+###########################################
+
+## Description:
+## This script retrieves reviews data for locations from TripAdvisor's API based on location IDs obtained from the TripAdvisor locations dataset. 
+## It fetches reviews for each location and stores them in a DataFrame. 
+## The retrieved data is then saved in Parquet format for further analysis.
+
+## Inputs:
+## - Parquet file containing TripAdvisor locations data
+
+## Outputs:
+## - Parquet file containing TripAdvisor reviews data
+
+# Imports
 import pandas as pd
 import requests
 import ast
 import time
 
+# Read TripAdvisor locations data from Parquet file
 tripadvisor = pd.read_parquet("./../data/landing_zone/tripadvisor_locations.parquet")
 
 total_results = []
 count = 0
 
 print(tripadvisor.shape)
-# Buscar Restaurantes
+# Search for restaurant reviews
 for i, info in tripadvisor.iterrows():
 
     url = f'https://api.content.tripadvisor.com/api/v1/location/{info["location_id"]}/reviews?key=87F2BA22551E40B69B57254881723D6E&language=en&limit=80'
@@ -32,5 +49,5 @@ for i, info in tripadvisor.iterrows():
     time.sleep(0.2)
 
 tripadvisor_reviews = pd.concat(total_results, ignore_index=True)
-
+# Save the DataFrame as Parquet file
 tripadvisor_reviews.to_parquet('./../data/landing_zone/tripadvisor_reviews.parquet')
