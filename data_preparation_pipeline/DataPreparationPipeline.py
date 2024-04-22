@@ -1,7 +1,16 @@
-###                       ###
-### Data Quality Pipeline ###
-###                       ###
+#################################
+### Data Preparation Pipeline ###
+#################################
 
+## Description:
+## This script performs a data Preparation pipeline on various datasets to ensure consistency and 
+## cleanliness of the data. 
+## It involves homogenizing data formats, removing undesired rows, renaming columns, and saving 
+## the resulting datasets.
+
+
+'''
+CODI PASSAT
 # Imports
 import duckdb
 from pyspark.sql import SparkSession
@@ -62,3 +71,4 @@ con_quality.register('airbnb_listings', airbnb_listings_quality)
 
 
 spark.stop()
+'''

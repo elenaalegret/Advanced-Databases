@@ -1,6 +1,17 @@
 #################################
 ### Data Formatting Pipeline  ###
 #################################
+'''
+ Description:
+ This script formats and preprocesses various datasets for further analysis. 
+ It involves connecting to a DuckDB database, loading data using Spark, preprocessing the data, and saving it back to DuckDB tables.
+
+ Inputs:
+ - Parquet files containing Airbnb listings, criminal dataset, TripAdvisor locations, and TripAdvisor reviews data
+
+ Outputs:
+ - DuckDB database with formatted tables for Airbnb listings, criminal dataset, TripAdvisor locations, and TripAdvisor reviews
+'''
 
 # Import
 import os

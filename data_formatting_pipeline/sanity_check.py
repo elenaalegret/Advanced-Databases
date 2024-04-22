@@ -2,6 +2,11 @@
 ## Formatting Sanity Check ##
 #############################
 
+## Description:
+## This script performs a sanity check on the contents of the formatted database. 
+## It connects to the DuckDB database containing the formatted tables and checks the number of records 
+## in each table, as well as provides a preview of the first 5 rows of each table for verification.
+
 ## Imports
 import duckdb
 
