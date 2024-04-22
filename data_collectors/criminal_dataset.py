@@ -1,4 +1,19 @@
-#### Dataset Preparation
+###########################################
+##          Dataset Preparation          ##
+##          for Criminal Acts           ##
+###########################################
+'''
+  Description:
+  This script retrieves a dataset containing Barcelona criminal acts. 
+  It fetches data from the specified URL and converts it into a pandas DataFrame. 
+  The resulting DataFrame is then saved in Parquet format for further processing.
+
+  Inputs:
+     - None
+
+  Outputs:
+     - A Parquet file containing the criminal acts dataset.
+'''
 
 # Imports
 import pandas as pd
