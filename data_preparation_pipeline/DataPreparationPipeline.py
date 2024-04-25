@@ -5,23 +5,14 @@
 ## Description:
 
 ## Imports
-import duckdb
-import pyspark
-from pyspark.sql import SparkSession
-from pprint import pprint
-from pyspark.sql.functions import concat_ws, expr, split, when, count, collect_list, col,rand, regexp_replace, trim, min, max
-import warnings
-import matplotlib.pyplot as plt
-from pyspark.sql.functions import udf
-from pyspark.sql.types import FloatType, ArrayType, StructType, StructField
-import pickle
-import random
+from utils import *
 
 ## Connection to formatted database
 jdbc_url = 'jdbc:duckdb:./../data/trusted_zone/barcelona_processed.db'
 driver = "org.duckdb.DuckDBDriver"
 
-
+# Loading the trusted datasets for explotation
+##############################################
 # SparkSession inicialitzation
 spark = SparkSession.builder\
     .config("spark.jars", "duckdb.jar") \
@@ -45,7 +36,7 @@ df_locations = spark.read \
   .load()
 
 # Criminal Dataset
-df = spark.read \
+df_criminal = spark.read \
   .format("jdbc") \
   .option("url", jdbc_url) \
   .option("driver", driver) \
