@@ -4,7 +4,6 @@
 <img src="data_preparation_pipeline/images/logo.png" alt="BCN Map4Tourism Logo" width="150">
 
 # Advanced-Databases 
----
 
 ### Elena Alegret, Sergi Tomàs and Júlia Orteu
 ## Authors
@@ -16,6 +15,16 @@
 This project focuses on collecting and formatting data from diverse sources, specifically targeting Airbnb listings and criminal activity datasets. Our goal is to facilitate data analysis and insights by preparing and organizing data efficiently. The repository includes raw data collection scripts, metadata documentation, and a data formatting pipeline.
 
 Our developed tool, named **BCN Map4Tourism**, features a visually appealing map interface that seamlessly integrates all the data in the study and is designed for tourists visiting Barcelona.
+
+
+## BCN Map4Tourism Application
+To run the application, navigate to the directory where the `app.py` file is located (`~/Advanced-Databases/data_preparation_pipeline` in this case) and execute the following command in your terminal:
+
+```
+streamlit run app.py
+```
+
+This command will start the Streamlit application defined in the `app.py` file. You can then access the application through your web browser by following the URL provided in the terminal output (typically `http://localhost:8501`).
 
 ## Directory Structure
 ```
