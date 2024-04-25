@@ -1,7 +1,17 @@
-
 ##################################
 ### Map4Tourism - Tourism Tool ###
-##################################
+##########################################################################################################################################################################
+
+# BCN Map4Tourism is a comprehensive tourism tool designed to enhance the experience of visitors to Barcelona. 
+# 
+# Key Features:
+# - Dynamic Map Visualization: Utilizes Folium to plot interactive maps showcasing Airbnb listings, restaurants, 
+#                              and other attractions with custom markers based on user selections.
+# - Data-Driven Insights: Offers a filtering system for selecting neighborhoods and attractions based on user preferences, including ratings and types of establishments.
+# - Crime Rate Analysis: Processes and displays crime data to inform tourists of the safety levels in different neighborhoods, helping them make safer travel decisions.
+# - Responsive Interface: Built with Streamlit, the tool includes a custom header with a logo, sidebar configurations for neighborhood selection, 
+#                         and sliders for customizing data representation.
+##########################################################################################################################################################################
 
 # Imports
 import folium
@@ -9,16 +19,17 @@ from streamlit_folium import folium_static
 import numpy as np
 from DataPreparationPipeline import *
 
+# Header section: Displays a custom header with a logo and main title on the Streamlit app
 st.write("""
     <div style="display:flex;align-items:center;">
         <img src="data:image/png;base64,{}" width="110">
-        <h1 style="margin-left:10px;">BCN Map4Tourism</h1>       
+        <h1 style="margin-left:10px;">BCN Map4Tourism</h1>
     </div>
 """.format(get_base64_of_bin_file("images/logo.png")), unsafe_allow_html=True)
 st.write("Welcome! Choose your neighborhood 🏘️ and explore local restaurants alongside crime rate \n statistics for a more informed experience. 😊🍽️📊")
 
 
-# Selection of neighbourhoods to visualize
+# Sidebar configuration: Allows users to select different neighborhoods for visualization
 selected_neighborhoods = {}
 with st.sidebar.expander("Neighborhoods"):
     col1, col2 = st.columns([2, 1])
@@ -29,20 +40,19 @@ with st.sidebar.expander("Neighborhoods"):
 
 
 # !!!!!!Attention!!!!!_____________________________________________________________________________________
-# Limited computational resources may restrict rendering capabilities locally 
+# Limited computational resources may restrict rendering capabilities locally
 # Additional resources would enable processing of larger datasets.
 # --> Constarint less apartments for visualization in local:  num_samples/1000 -- only 10% of the total data
 # --> If you have resources descoment the indicated line
-num_samples = st.sidebar.slider("Percentage of Locations Displayed", min_value=1, max_value=100, value=20)
-#sampled_data = df_airbnb.sample(withReplacement=False, fraction=num_samples/100, seed=42) # MORE RESOURCES
-sampled_data = df_airbnb.sample(withReplacement=False, fraction=num_samples/1000, seed=42) # LESS RESOURCES
-sampled_locations = df_locations.sample(withReplacement=False, fraction=num_samples/100, seed=42) 
 #__________________________________________________________________________________________________________
 
+# Data sampling and filtering: Reduces dataset based on user-selected percentage for performance optimization
+num_samples = st.sidebar.slider("Percentage of Locations Displayed", min_value=1, max_value=100, value=20)
+sampled_data = df_airbnb.sample(withReplacement=False, fraction=num_samples/1000, seed=42) # In case of wanting more resources change 1000 to 100
+sampled_locations = df_locations.sample(withReplacement=False, fraction=num_samples/100, seed=42)
 
-# Sampled data filtered based on user selection
+# Filters the sampled data based on neighborhoods selected by the user
 sampled_data = filter_apartments(sampled_data)
-
 filtered_data = sampled_data[sampled_data['neighbourhood'].isin([neighborhood for neighborhood, selected in selected_neighborhoods.items() if selected])]
 filtered_locations = sampled_locations[sampled_locations['neighbourhood'].isin([neighborhood for neighborhood, selected in selected_neighborhoods.items() if selected])]
 
@@ -62,15 +72,15 @@ st.markdown(f'''
 </div>
 ''', unsafe_allow_html=True)
 
-# users choose if see  restaurants_attractions
-show_restaurants_attractions = st.checkbox("Show Restaurants & Attractions")
-# Creation of a map visualization of Barcelona
-m = folium.Map(location=[41.3879, 2.1699], zoom_start=12)
+# Map visualization: Configures and displays a map with markers for Airbnb listings and optionally restaurants/attractions
+show_restaurants_attractions = st.checkbox("Show Restaurants & Attractions") # Choose to see restaurants_attractions
 
+m = folium.Map(location=[41.3879, 2.1699], zoom_start=12)
 if show_restaurants_attractions:
     min_rating = st.slider("🧹 Filter by Minimum Rating", min_value=0, max_value=10, value=5)
     filtered_locations = filtered_locations.filter(filtered_locations['avg_rating'] >= min_rating)
-
+    
+    # Adds markers for restaurants and attractions to the map
     for row in filtered_locations.collect():
         emoji = "🍽️" if row['type'] == "restaurant" else "📌"
         popup_content = popup_content_review(row, df_reviews, emoji)
@@ -80,8 +90,6 @@ if show_restaurants_attractions:
             tooltip=f"{emoji} {row['type']} ",
             icon=folium.Icon(color=colors.get(row['neighbourhood'], 'gray'), icon=location_icons.get(row['type']))
         ).add_to(m)
-
-
 
     st.markdown(f'''
     <div style="
@@ -101,7 +109,7 @@ if show_restaurants_attractions:
 
 for row in filtered_data.collect():
     neighbourhood = row['neighbourhood']
-    marker_color = colors.get(neighbourhood, 'gray')  
+    marker_color = colors.get(neighbourhood, 'gray')
     description = '🏠 ' + row['property_type'] + '\n\n' + 'Price ' + str(row['price']) + " €"
 
     popup_content = """
@@ -123,35 +131,34 @@ for row in filtered_data.collect():
                         beds=row['beds'],
                         bed_type=row['bed_type']
                     )
-    # Crear el marcador con el color especificado
+    # Create the marker on with the specified color
     folium.Marker(
         location=[row['latitude'], row['longitude']],
         popup = folium.Popup(popup_content, max_width=300),
         tooltip=f"{description}",
         icon=folium.Icon(color=marker_color, icon='home', prefix='fa')
     ).add_to(m)
-
 # Show the map
 folium_static(m)
 
 
-# Criminal Analysis 
-
+# Crime Analysis: Processes crime data to display statistics about the types of crimes in selected neighborhoods
 top_crimes_by_neighborhood, total_crimes_all_neighborhoods = criminal_implementation(df_criminal, selected_neighborhoods)
 
+# Displays crime statistics and identifies neighborhoods with highest crime rates
 st.subheader("Top 5 Crime Types by Neighborhood")
 if not top_crimes_by_neighborhood.empty:
     grouped = top_crimes_by_neighborhood.groupby('area_basica_policial')
     neighborhoods = list(grouped.groups.keys())
     highest_risk_neighborhood = None
     highest_crime_ratio = 0
-    for i in range(0, len(neighborhoods), 2):  
-        cols = st.columns(2)  
+    for i in range(0, len(neighborhoods), 2):
+        cols = st.columns(2)
         for j in range(2):
-            if i + j < len(neighborhoods):  
+            if i + j < len(neighborhoods):
                 name = neighborhoods[i + j]
                 group = grouped.get_group(name)
-                with cols[j]:  
+                with cols[j]:
                     st.markdown(f"###### 📍 {name}")
                     display_group = group[['ambit_fet', 'percentage']].copy()
                     display_group = display_group.rename(columns={'ambit_fet': 'Crimes', 'percentage': 'Percentage'})
