@@ -9,7 +9,8 @@
 - Sergi Tomàs.
 - Júlia Orteu
 
-<img src="data_preparation_pipeline/images/logo.png" alt="BCN Map4Tourism Logo" width="100">
+<img src="data_preparation_pipeline/images/logo.png" alt="BCN Map4Tourism Logo" width="150">
+
 ## Project Description
 This project focuses on collecting and formatting data from diverse sources, specifically targeting Airbnb listings and criminal activity datasets. Our goal is to facilitate data analysis and insights by preparing and organizing data efficiently. The repository includes raw data collection scripts, metadata documentation, and a data formatting pipeline.
 
