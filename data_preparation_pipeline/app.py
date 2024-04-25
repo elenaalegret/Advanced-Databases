@@ -9,7 +9,7 @@ from streamlit_folium import folium_static
 import numpy as np
 import base64
 from DataPreparationPipeline import *
-from utils import * 
+
 
 def get_base64_of_bin_file(bin_file):
     with open(bin_file, 'rb') as f:
