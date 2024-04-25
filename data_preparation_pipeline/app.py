@@ -110,8 +110,8 @@ st.markdown(f'''
     color: #a26464;
     background-color: #ffffff;
     box-shadow: 2px 2px 12px rgba(0,0,0,0.1);">
-    <b>Displayed Restaurants:</b> {filtered_locations.filter(filtered_locations['type'] == 'restaurant').count()}<br>
-    <b>Displayed Attractions:</b> {filtered_locations.filter(filtered_locations['type'] == 'attraction').count()}
+    <b>Displayed Restaurants </b> {filtered_locations.filter(filtered_locations['type'] == 'restaurant').count()}<br>
+    <b>Displayed Attractions </b> {filtered_locations.filter(filtered_locations['type'] == 'attraction').count()}
 </div>
 ''', unsafe_allow_html=True)
 
