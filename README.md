@@ -32,6 +32,7 @@ This command will start the Streamlit application defined in the `app.py` file. 
 ```
 .
 ├── README.md
+├── REPORT.pdf
 ├── data
 │   ├── formatted_zone
 │   │   ├── airbnb_dataset.parquet
@@ -83,6 +84,8 @@ This command will start the Streamlit application defined in the `app.py` file. 
 │   └── postgresql.jar
 └── requirements.txt
 ```
+### REPORT
+- A technical explanation of the project can be found in the `REPORT.pdf
 
 ### data
 - **landing_zone**: Contains raw data files as they are collected from the data sources.
@@ -122,5 +125,5 @@ This directory contains scripts and utilities used for preparing data for visual
 - Contains all Python library dependencies required by the project, ensuring all data scripts run without issues. Use `pip install -r requirements.txt` to install these dependencies.
 
 ---
----
+
 
