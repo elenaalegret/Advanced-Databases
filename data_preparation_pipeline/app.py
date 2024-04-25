@@ -22,8 +22,7 @@ def get_base64_of_bin_file(bin_file):
 st.write("""
     <div style="display:flex;align-items:center;">
         <img src="data:image/png;base64,{}" width="110">
-        <h1 style="margin-left:10px;">BCN Map4Tourism</h1>
-        
+        <h1 style="margin-left:10px;">BCN Map4Tourism</h1>       
     </div>
 """.format(get_base64_of_bin_file("images/logo.png")), unsafe_allow_html=True)
 st.write("Welcome! Choose your neighborhood 🏘️ and explore local restaurants alongside crime rate \n statistics for a more informed experience. 😊🍽️📊")
@@ -40,19 +39,20 @@ num_samples = st.sidebar.slider("Percentage of Airbnb Locations", min_value=1, m
 sampled_data = df_airbnb.sample(withReplacement=False, fraction=num_samples/1000, seed=42) # LESS RESOURCES
 #__________________________________________________________________________________________________________
 
+selected_neighborhoods = {}
 with st.sidebar.expander("Neighborhoods Color Legend"):
     for neighborhood, color in colors.items():
-        st.markdown(f"<span style='display: inline-block; width: 12px; height: 12px; background: {color};'></span> {neighborhood}", unsafe_allow_html=True)
+        # Checkbox per neighbourhood 
+        is_selected = st.checkbox(f"{neighborhood}", key=f"chk_{neighborhood}")
+        selected_neighborhoods[neighborhood] = is_selected
+        st.markdown(f"<span style='display: inline-block; width: 12px; height: 12px; background: {color};'></span>", unsafe_allow_html=True)
+
+filtered_data = sampled_data[sampled_data['neighbourhood'].isin([neighborhood for neighborhood, selected in selected_neighborhoods.items() if selected])]
+
 
 # Creation of a map visualization of Barcelona
 m = folium.Map(location=[41.3879, 2.1699], zoom_start=12)
-
-# Add markers for each point in the sample
-#for row in sampled_data.collect():
-    
-    #folium.Marker(location=[row['latitude'], row['longitude']], popup=f"{description}", tooltip=f"{row['Name']}").add_to(m)
-
-for row in sampled_data.collect():
+for row in filtered_data.collect():
     neighbourhood = row['neighbourhood']
     location = [row['latitude'], row['longitude']]
     marker_color = colors.get(neighbourhood, 'gray')  
@@ -67,40 +67,11 @@ for row in sampled_data.collect():
     ).add_to(m)
 
 
-st.markdown(f'''
-<div style="
-    border-radius: 10px;
-    border: 2px solid #ff9832;
-    padding: 15px;
-    margin-top: 5px;
-    margin-bottom: 5px;
-    font-size: 16px;
-    color: #ff9832;
-    background-color: #ffffff;
-    box-shadow: 2px 2px 12px rgba(0,0,0,0.1);">
-    <b> Displayed Apartments </b> {sampled_data.count()}
-</div>
-''', unsafe_allow_html=True)
-
-
 
 # Mostrar el mapa
 folium_static(m)
 
 
-"""
-selected_neighborhoods = {}
 
-with st.sidebar.expander("Neighborhoods Color Legend"):
-    for neighborhood, color in colors.items():
-        # Creamos un checkbox para cada barrio y guardamos el estado en el diccionario
-        is_selected = st.checkbox(f"{neighborhood}", key=f"chk_{neighborhood}")
-        selected_neighborhoods[neighborhood] = is_selected
-        # Mostrar el color del barrio junto al checkbox
-        st.markdown(f"<span style='display: inline-block; width: 12px; height: 12px; background: {color};'></span>", unsafe_allow_html=True)
-
-# Filtrar el DataFrame basado en la selección de barrios
-filtered_data = df_airbnb[df_airbnb['neighbourhood'].isin([neighborhood for neighborhood, selected in selected_neighborhoods.items() if selected])]
-"""
 
 
