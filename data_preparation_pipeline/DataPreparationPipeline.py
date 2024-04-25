@@ -36,7 +36,23 @@ df_airbnb = spark.read \
   .option("query", "SELECT * FROM df_airbnb_listings") \
   .load()
 
-# Regions colors 4 visualization
+# Loading airbnb data
+df_locations = spark.read \
+  .format("jdbc") \
+  .option("url", jdbc_url) \
+  .option("driver", driver) \
+  .option("query", "SELECT * FROM df_tripadvisor_locations") \
+  .load()
+
+# Criminal Dataset
+df = spark.read \
+  .format("jdbc") \
+  .option("url", jdbc_url) \
+  .option("driver", driver) \
+  .option("query", "SELECT * FROM df_criminal_dataset") \
+  .load()
+
+# Dics for visualization
 colors = {
     'Gràcia': 'lightblue',
     'Sant Martí': 'green',
@@ -48,4 +64,9 @@ colors = {
     'Eixample': 'beige',
     'Sant Andreu': 'lightgray',
     'Ciutat Vella': 'lightgreen'
+}
+
+location_icons = {
+    'restaurant': 'cutlery',
+    'attraction': 'star'
 }

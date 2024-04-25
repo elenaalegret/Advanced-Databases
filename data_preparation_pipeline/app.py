@@ -48,7 +48,7 @@ with st.sidebar.expander("Neighborhoods Color Legend"):
         st.markdown(f"<span style='display: inline-block; width: 12px; height: 12px; background: {color};'></span>", unsafe_allow_html=True)
 
 filtered_data = sampled_data[sampled_data['neighbourhood'].isin([neighborhood for neighborhood, selected in selected_neighborhoods.items() if selected])]
-
+filtered_locations = df_locations[df_locations['neighbourhood'].isin([neighborhood for neighborhood, selected in selected_neighborhoods.items() if selected])]
 
 # Creation of a map visualization of Barcelona
 m = folium.Map(location=[41.3879, 2.1699], zoom_start=12)
@@ -66,10 +66,17 @@ for row in filtered_data.collect():
         icon=folium.Icon(color=marker_color, icon='home', prefix='fa')
     ).add_to(m)
 
-
+for row in filtered_locations.collect():
+    folium.Marker(
+        location=[row['latitude'], row['longitude']],
+        popup=f"{row['type']}",  # Popup con nombre y tipo
+        tooltip=f"{row['name']}",
+        icon=folium.Icon(color=colors.get(row['neighbourhood'], 'gray'), icon=location_icons.get(row['type']))
+    ).add_to(m)
 
 # Mostrar el mapa
 folium_static(m)
+
 
 
 
