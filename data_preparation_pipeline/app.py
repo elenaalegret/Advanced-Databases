@@ -40,8 +40,16 @@ sampled_data = df_airbnb.sample(withReplacement=False, fraction=num_samples/1000
 sampled_locations = df_locations.sample(withReplacement=False, fraction=num_samples/100, seed=42) 
 #__________________________________________________________________________________________________________
 
+
+# The user can choose the price range
+# Filter apartments based on the selected price range
+price_max = st.sidebar.slider("Maximum Price", min_value=0, max_value=int(df_airbnb.select(max("price")).first()[0]), value=50)
+sampled_data = sampled_data.filter((sampled_data['price'] < price_max))
+
+
+# Selection of neighbourhoods to visualize
 selected_neighborhoods = {}
-with st.sidebar.expander("Neighborhoods Color Legend"):
+with st.sidebar.expander("Neighborhoods"):
     for neighborhood, color in colors.items():
         # Checkbox per neighbourhood 
         is_selected = st.checkbox(f"{neighborhood}", key=f"chk_{neighborhood}")

@@ -9,7 +9,7 @@ import duckdb
 import pyspark
 from pyspark.sql import SparkSession
 from pprint import pprint
-from pyspark.sql.functions import concat_ws, expr, split, when, count, collect_list, col,rand, regexp_replace, trim
+from pyspark.sql.functions import concat_ws, expr, split, when, count, collect_list, col,rand, regexp_replace, trim, min, max
 import warnings
 import matplotlib.pyplot as plt
 from pyspark.sql.functions import udf
