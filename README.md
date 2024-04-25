@@ -26,6 +26,8 @@ streamlit run app.py
 
 This command will start the Streamlit application defined in the `app.py` file. You can then access the application through your web browser by following the URL provided in the terminal output (typically `http://localhost:8501`).
 
+> To access the interactive interface integrated into your web browser, visit the [BCN Map4Tourism interface](https://bcnmap4tourismin.streamlit.app).
+
 ## Directory Structure
 ```
 .
