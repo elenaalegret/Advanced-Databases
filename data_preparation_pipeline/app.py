@@ -7,16 +7,7 @@
 import folium
 from streamlit_folium import folium_static
 import numpy as np
-import base64
 from DataPreparationPipeline import *
-
-
-def get_base64_of_bin_file(bin_file):
-    with open(bin_file, 'rb') as f:
-        data = f.read()
-    return base64.b64encode(data).decode()
-
-
 
 st.write("""
     <div style="display:flex;align-items:center;">
@@ -30,12 +21,12 @@ st.write("Welcome! Choose your neighborhood 🏘️ and explore local restaurant
 # Selection of neighbourhoods to visualize
 selected_neighborhoods = {}
 with st.sidebar.expander("Neighborhoods"):
-    
     col1, col2 = st.columns([2, 1])
     for neighborhood, color in colors.items():
         is_selected = col1.checkbox(f"{neighborhood}", key=f"chk_{neighborhood}")
         selected_neighborhoods[neighborhood] = is_selected
         col2.markdown(f"<span style='display: inline-block; width: 12px; height: 12px; background: {color}; margin-left: 10px;'></span>", unsafe_allow_html=True)
+
 
 # !!!!!!Attention!!!!!_____________________________________________________________________________________
 # Limited computational resources may restrict rendering capabilities locally 
@@ -77,13 +68,20 @@ show_restaurants_attractions = st.checkbox("Show Restaurants & Attractions")
 m = folium.Map(location=[41.3879, 2.1699], zoom_start=12)
 
 if show_restaurants_attractions:
+    min_rating = st.slider("🧹 Filter by Minimum Rating", min_value=0, max_value=10, value=5)
+    filtered_locations = filtered_locations.filter(filtered_locations['avg_rating'] >= min_rating)
+
     for row in filtered_locations.collect():
+        emoji = "🍽️" if row['type'] == "restaurant" else "📌"
+        popup_content = popup_content_review(row, df_reviews, emoji)
         folium.Marker(
             location=[row['latitude'], row['longitude']],
-            popup=f"{row['type']}",  # Popup con nombre y tipo
-            tooltip=f"{row['name']}",
+            popup=folium.Popup(popup_content, max_width=600),  # Popup con nombre y tipo
+            tooltip=f"{emoji} {row['type']} ",
             icon=folium.Icon(color=colors.get(row['neighbourhood'], 'gray'), icon=location_icons.get(row['type']))
         ).add_to(m)
+
+
 
     st.markdown(f'''
     <div style="
