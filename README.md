@@ -12,7 +12,7 @@
 ## Project Description
 This project focuses on collecting and formatting data from diverse sources, specifically targeting Airbnb listings and criminal activity datasets. Our goal is to facilitate data analysis and insights by preparing and organizing data efficiently. The repository includes raw data collection scripts, metadata documentation, and a data formatting pipeline.
 
-![BCN Map4Tourism Logo]('data_preparation_pipeline/images/bcn_map_logo.png')
+![BCN Map4Tourism Logo]('data_preparation_pipeline/images/logo.png')
 
 Our developed tool, named **BCN Map4Tourism**, features a visually appealing map interface that seamlessly integrates all the data in the study and is designed for tourists visiting Barcelona.
 
